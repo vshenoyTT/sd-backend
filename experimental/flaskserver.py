@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory, send_file, send_from_directory
 import json
 import os
 import atexit
@@ -54,12 +54,12 @@ def update_status():
 @app.route('/get_image', methods=['GET'])
 def get_image():
     image_name = 'interactive_512x512_ttnn.png'
-    directory = os.path.abspath('/home/ttuser/vshenoy/tt-metal/')  
+    directory = os.getcwd()  # Get the current working directory
     return send_from_directory(directory, image_name)
 
 @app.route('/image_exists', methods=['GET'])
 def image_exists():
-    image_path = os.path.abspath('/home/ttuser/vshenoy/tt-metal/interactive_512x512_ttnn.png')  # Adjust path as needed
+    image_path = 'interactive_512x512_ttnn.png'
     if os.path.isfile(image_path):
         return jsonify({"exists": True}), 200
     else:
