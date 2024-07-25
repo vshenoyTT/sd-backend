@@ -3,11 +3,11 @@ import signal
 import sys
 import os
 
-# Define the two scripts to run
+# Two scripts to run
 script1 = "pytest models/demos/wormhole/stable_diffusion/demo/experimental/jsonSDserver.py"
 script2 = "python models/demos/wormhole/stable_diffusion/demo/experimental/flaskserver.py"
 
-# Start both scripts using subprocess.Popen
+# Start both scripts using subprocess
 process1 = subprocess.Popen(script1, shell=True)
 process2 = subprocess.Popen(script2, shell=True)
 
@@ -23,7 +23,7 @@ def kill_port_5000():
     except Exception as e:
         print(f"Error occurred: {e}")
 
-# Helper to terminate both processes and kill port 5000
+# Function to terminate both processes and kill port 5000
 def signal_handler(sig, frame):
     print('Terminating processes...')
     process1.terminate()
@@ -35,7 +35,6 @@ def signal_handler(sig, frame):
 signal.signal(signal.SIGINT, signal_handler)
 signal.signal(signal.SIGTERM, signal_handler)
 
-# Keep the script running
 print('Running. Press Ctrl+C to stop.')
 try:
     process1.wait()
