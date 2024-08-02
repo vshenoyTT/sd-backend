@@ -16,7 +16,7 @@ Stable Diffusion is a latent text-to-image diffusion model capable of generating
 To run the demo, make sure to build the project, activate the environment, and set the appropriate environment variables.
 For more information, refer [installation and build guide](https://github.com/tenstorrent/tt-metal/blob/main/INSTALLING.md).
 
-Also, clone the frontend component from this [repository](https://github.com/vshenoyTT/sd-frontend), following build directions from the README in the repository.
+Also, clone the frontend component of the demo from this [GitHub repository](https://github.com/vshenoyTT/sd-frontend), following build directions from the README in the linked repository.
 
 Use `python models/demos/wormhole/stable_diffusion/demo/experimental/demo.py` to run the backend server component of the demo, on your TT device.
 
