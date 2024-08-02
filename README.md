@@ -1,4 +1,4 @@
-Open the `experimental` file for run directions. test
+Open the `experimental` file for run directions.
 
 - **demo.py** runs flaskserver.py and jsonSDserver.py.
 - **flaskserver.py** runs a Flask Server to communicate between SD on TT device and frontend on user device.
