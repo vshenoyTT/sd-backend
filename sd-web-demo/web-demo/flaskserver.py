@@ -15,7 +15,7 @@ def submit():
     prompt = data.get('prompt')
     print(prompt)
 
-    json_file_path = 'models/demos/wormhole/stable_diffusion/demo/experimental/input_prompts.json'
+    json_file_path = 'models/demos/wormhole/stable_diffusion/demo/web_demo/input_prompts.json'
 
     if not os.path.isfile(json_file_path):
         with open(json_file_path, 'w') as f:
@@ -36,7 +36,7 @@ def update_status():
     data = request.get_json()
     prompt = data.get('prompt')
 
-    json_file_path = 'models/demos/wormhole/stable_diffusion/demo/experimental/input_prompts.json'
+    json_file_path = 'models/demos/wormhole/stable_diffusion/demo/web_demo/input_prompts.json'
 
     with open(json_file_path, 'r') as f:
         prompts_data = json.load(f)
@@ -67,7 +67,7 @@ def image_exists():
 
 @app.route('/clean_up', methods=['POST'])
 def clean_up():
-    json_file_path = 'models/demos/wormhole/stable_diffusion/demo/experimental/input_prompts.json'
+    json_file_path = 'models/demos/wormhole/stable_diffusion/demo/web_demo/input_prompts.json'
 
     with open(json_file_path, 'r') as f:
         prompts_data = json.load(f)
@@ -80,8 +80,8 @@ def clean_up():
     return jsonify({"message": "Cleaned up done prompts."})
 
 def cleanup():
-    if os.path.isfile("models/demos/wormhole/stable_diffusion/demo/experimental/input_prompts.json"):
-        os.remove("models/demos/wormhole/stable_diffusion/demo/experimental/input_prompts.json")
+    if os.path.isfile("models/demos/wormhole/stable_diffusion/demo/web_demo/input_prompts.json"):
+        os.remove("models/demos/wormhole/stable_diffusion/demo/web_demo/input_prompts.json")
         print(f"Deleted json")
 
     if os.path.isfile("interactive_512x512_ttnn.png"):

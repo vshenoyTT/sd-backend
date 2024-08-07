@@ -133,18 +133,46 @@ def run_interactive_demo_inference(device, num_inference_steps, image_size=(256,
 
     time_step = ttnn_scheduler.timesteps.tolist()
 
-    while 1:
+    prevPrompt = ""
+    json_file_path = 'models/demos/wormhole/stable_diffusion/demo/web_demo/input_prompts.json'
+
+    while True:
+        while not os.path.exists(json_file_path):
+            print(f"Waiting for the file {json_file_path} to be created...")
+            time.sleep(5)
+
         ttnn_scheduler.set_timesteps(num_inference_steps)
-        print("Enter the input promt, or q to exit:")
-        new_prompt = input()
-        if len(new_prompt) > 0:
+
+        with open(json_file_path, 'r') as f:
+            data = json.load(f)
+            input_prompts = data["prompts"]
+
+        new_prompt = ""
+        for prompt in input_prompts:
+            if prompt["status"] == "not generated":
+                new_prompt = prompt["prompt"]
+                prompt["status"] = "generated"
+                break
+
+        if new_prompt == "":
+            print("No 'not generated' prompts found, waiting...")
+            time.sleep(5)
+            continue
+
+        if new_prompt == prevPrompt:
+            continue
+        elif len(new_prompt) > 0:
             input_prompt = [new_prompt]
+            prevPrompt = new_prompt
         if input_prompt[0] == "q":
             break
 
         experiment_name = f"interactive_{height}x{width}"
         logger.info(f"input prompt : {input_prompt}")
         batch_size = len(input_prompt)
+
+        with open(json_file_path, 'w') as f:
+            json.dump({"prompts": input_prompts}, f, indent=4)
 
         ## First, we get the text_embeddings for the prompt. These embeddings will be used to condition the UNet model.
         # Tokenizer and Text Encoder
@@ -171,15 +199,15 @@ def run_interactive_demo_inference(device, num_inference_steps, image_size=(256,
 
         iter = 0
         ttnn_latents = rand_latents
-        # # Denoising loop
+
         total_accum = 0
         for index in tqdm(range(len(time_step))):
-            # expand the latents if we are doing classifier-free guidance to avoid doing two forward passes.
+
             t0 = time.time()
             ttnn_latent_model_input = ttnn.concat([ttnn_latents, ttnn_latents], dim=0)
             _t = _tlist[index]
             t = time_step[index]
-            # predict the noise residual
+
             with torch.no_grad():
                 ttnn_output = model(
                     ttnn_latent_model_input,  # input
@@ -191,7 +219,7 @@ def run_interactive_demo_inference(device, num_inference_steps, image_size=(256,
                     return_dict=True,
                     config=config,
                 )
-            # perform guidance
+
             noise_pred = tt_guide(ttnn_output, guidance_scale)
 
             ttnn_latents = ttnn_scheduler.step(noise_pred, t, ttnn_latents).prev_sample
@@ -201,18 +229,24 @@ def run_interactive_demo_inference(device, num_inference_steps, image_size=(256,
 
         latents = ttnn.to_torch(ttnn_latents).to(torch.float32)
 
-        # scale and decode the image latents with vae
         latents = 1 / 0.18215 * latents
         with torch.no_grad():
             image = vae.decode(latents).sample
 
-        # Image post-processing
         image = (image / 2 + 0.5).clamp(0, 1)
         image = image.detach().cpu().permute(0, 2, 3, 1).numpy()
         images = (image * 255).round().astype("uint8")
         pil_images = [Image.fromarray(image) for image in images][0]
         ttnn_output_path = f"{experiment_name}_ttnn.png"
         pil_images.save(ttnn_output_path)
+
+        for prompt in input_prompts:
+            if prompt["prompt"] == new_prompt:
+                prompt["status"] = "done"
+                break
+
+        with open(json_file_path, 'w') as f:
+            json.dump({"prompts": input_prompts}, f, indent=4)
 
 @skip_for_grayskull()
 @pytest.mark.parametrize("device_params", [{"l1_small_size": 32768}], indirect=True)
