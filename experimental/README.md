@@ -16,7 +16,7 @@ Stable Diffusion is a latent text-to-image diffusion model capable of generating
 To run the demo, make sure to build the project, activate the environment, and set the appropriate environment variables.
 For more information, refer [installation and build guide](https://github.com/tenstorrent/tt-metal/blob/main/INSTALLING.md).
 
-The web interface for this demo is built in [Streamlit](https://streamlit.io). Use `pip install streamlit` to install the Streamlit dependencies on your machine.  
+Use `pip install streamlit` to install the Streamlit dependencies on your machine.  
 
 Use `python models/demos/wormhole/stable_diffusion/demo/web_demo/demo.py` to run the demo. 
 
