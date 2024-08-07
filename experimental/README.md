@@ -16,8 +16,10 @@ Stable Diffusion is a latent text-to-image diffusion model capable of generating
 To run the demo, make sure to build the project, activate the environment, and set the appropriate environment variables.
 For more information, refer [installation and build guide](https://github.com/tenstorrent/tt-metal/blob/main/INSTALLING.md).
 
-Use `pip install streamlit` to install the Streamlit dependencies on your machine.  
+The interface of this project is built with [Streamlit](https://streamlit.io). Use `pip install streamlit` to install the Streamlit dependencies on your machine. 
 
-Use `python models/demos/wormhole/stable_diffusion/demo/web_demo/demo.py` to run the demo. 
+The web demo utilizes a [Flask](https://flask.palletsprojects.com/en/3.0.x/) server. Use `pip install Flask` to install the Flask dependencies on your machine.
+
+Use `python models/demos/wormhole/stable_diffusion/demo/web_demo/demo.py` to run the web demo.
 
 The web interface should automatically pop-up on **http://localhost:8501**.
