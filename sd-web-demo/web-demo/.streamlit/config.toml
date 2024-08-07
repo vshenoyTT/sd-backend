@@ -1,7 +1,0 @@
-[theme]
-base = "light"
-primaryColor = "#988dd9"
-textColor = "black"
-
-[server]
-maxUploadSize = 400
