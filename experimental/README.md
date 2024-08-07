@@ -20,4 +20,4 @@ The interface of this project is built with [Streamlit](https://streamlit.io). U
 
 The web demo utilizes a [Flask](https://flask.palletsprojects.com/en/3.0.x/) server. Use `pip install Flask` to install the Flask dependencies on your machine.
 
-Use `python models/demos/wormhole/stable_diffusion/demo/web_demo/demo.py` to run the web demo. It should automatically popup on **http://localhost:8501**.
+Use `python models/demos/wormhole/stable_diffusion/demo/web_demo/demo.py` to run the web demo. It should automatically pop-up at this [address](http://localhost:8501) (localhost:8501).
