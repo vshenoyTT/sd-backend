@@ -1,1 +1,1 @@
-Stable Diffusion on TT Wormhole
+Stable Diffusion Web Demo on TT Wormhole
