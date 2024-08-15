@@ -6,7 +6,6 @@ import time
 import os
 import json
 
-# Streamlit App
 DOWNLOAD_PATH = os.path.join(os.path.expanduser("~"), "interactive_512x512_ttnn.png")
 
 # Add space below the title
@@ -52,8 +51,10 @@ def check_and_update_image(server_url):
             decoded_string = prompt_response.content.decode('utf-8').strip()
             parsed_data = json.loads(decoded_string)
             total_acc = round(parsed_data.get("total_acc"), 2)
+            batch_size = round(parsed_data.get("batch_size"), 0)
+            steps = round(parsed_data.get("steps"), 0)
             promp = parsed_data.get("prompt")
-            curr = f"{total_acc} seconds to generate '{promp}'"
+            curr = f"{total_acc} seconds to generate '{promp}' with batch size of {batch_size} and {steps} steps"
             print(curr)
     except requests.exceptions.RequestException as e:
         st.error(f"Error connecting to the server: {e}")

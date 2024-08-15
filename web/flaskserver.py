@@ -3,7 +3,6 @@ import json
 import os
 import atexit
 
-# Flask Server
 app = Flask(__name__)
 
 @app.route('/')
@@ -101,7 +100,9 @@ def get_latest_time():
 
     return jsonify({
         "prompt": latest_prompt["prompt"],
-        "total_acc": latest_prompt["total_acc"]
+        "total_acc": latest_prompt["total_acc"],
+        "batch_size": latest_prompt["batch_size"],
+        "steps": latest_prompt["steps"]
     }), 200
 
 def cleanup():
@@ -115,6 +116,6 @@ def cleanup():
 
 atexit.register(cleanup)
 
-#test
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

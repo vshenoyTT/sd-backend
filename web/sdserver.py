@@ -9,8 +9,8 @@ from tqdm.auto import tqdm
 from datasets import load_dataset
 import os
 import time
+import random
 
-# SD Server
 from transformers import CLIPTextModel, CLIPTokenizer
 from diffusers import (
     AutoencoderKL,
@@ -105,7 +105,9 @@ def run_interactive_demo_inference(device, num_inference_steps, image_size=(256,
     model = UNet2D(device, parameters, 2, input_height, input_width, reader_patterns_cache)
 
     guidance_scale = 7.5  # Scale for classifier-free guidance
-    generator = torch.manual_seed(174)  # 10233 Seed generator to create the inital latent noise
+    random_seed = random.randrange(200) + 2
+    # generator = torch.manual_seed(174)  # 10233 Seed generator to create the inital latent noise
+    generator = torch.manual_seed(random_seed)
     batch_size = 1
 
     # Initial random noise
@@ -244,6 +246,8 @@ def run_interactive_demo_inference(device, num_inference_steps, image_size=(256,
 
         input_prompts[currInd]["status"] = "done"
         input_prompts[currInd]["total_acc"] = total_accum 
+        input_prompts[currInd]["batch_size"] = batch_size
+        input_prompts[currInd]["steps"] = num_inference_steps
 
         with open(json_file_path, 'w') as f:
             json.dump({"prompts": input_prompts}, f, indent=4)

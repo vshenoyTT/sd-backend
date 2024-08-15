@@ -3,8 +3,6 @@ import signal
 import sys
 import os
 
-# Main file
-
 # Two scripts to run
 script1 = "pytest models/demos/wormhole/stable_diffusion/demo/web_demo/sdserver.py"
 script2 = "python models/demos/wormhole/stable_diffusion/demo/web_demo/flaskserver.py"
